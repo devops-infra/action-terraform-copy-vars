@@ -73,4 +73,6 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         push_changes: true
         dirs_with_modules: modules
+        files_with_vars: variables.tf
+        all_vars_file: all-variables.tf
 ```

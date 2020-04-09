@@ -37,9 +37,10 @@ if [[ ${INPUT_PUSH_CHANGES} == "true" && ! -z ${FILES_CHANGED} ]]; then
   REPO_URL="https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
   git config --global user.name ${GITHUB_ACTOR}
   git config --global user.email ${GITHUB_ACTOR}@users.noreply.github.com
-  git commit -am "[AUTO] ${MESSAGE}"
+  git commit -am "[AUTO] Updated variables in files: ${FILES_CHANGED}"
   git push ${REPO_URL} HEAD:${BRANCH}
   echo " "
+  echo "[INFO] No errors found."
   echo "::set-output name=files_changed::${FILES_CHANGED}"
   echo " "
   exit 0
@@ -48,12 +49,14 @@ fi
 # Fail if needed
 if [[ ${INPUT_FAIL_ON_MISSING} == "true" && ${RET_CODE} != "0" ]]; then
   echo " "
+  echo "[ERROR] Not all variables where properly defined."
   echo "::set-output name=files_changed::${FILES_CHANGED}"
   echo " "
   exit 1
 else
   # Pass in other cases
   echo " "
+  echo "[INFO] No errors found."
   echo "::set-output name=files_changed::${FILES_CHANGED}"
   echo " "
   exit 0
