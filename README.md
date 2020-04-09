@@ -1,4 +1,4 @@
-# Format HCL files Action
+# Copy variables to many Terraform modules at once
 
 Dockerized ([christophshyper/action-terraform-copy-vars](https://hub.docker.com/repository/docker/christophshyper/action-terraform-copy-vars)) GitHub Action automatically updating Terraform definitions from a file `all_vars_file` to all files named `files_with_vars` in directories matching `dirs_with_modules` and committing fixed files back to the current branch.
 
@@ -43,9 +43,7 @@ Fail action if not all variables in `variables.tf` in `terragrunt` subdirectorie
 ```yaml
 name: Check Terraform variables
 on:
-  push:
-    branches:
-      - "**"
+  push
 jobs:
   terraform-copy-vars:
     runs-on: ubuntu-latest
@@ -62,16 +60,14 @@ Copy variables definitions from `all-variables.tf` to all `variables.tf` in `mod
 ```yaml
 name: Copy Terraform variables accross modules
 on:
-  push:
-    branches:
-      - "**"
+  push
 jobs:
   terraform-copy-vars:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Format HCL
+    - name: Update Terraform variables
       uses: docker://christophshyper/action-terraform-copy-vars:latest
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
