@@ -1,5 +1,5 @@
-# Use a clean tiny image with Python 3
-FROM python:3
+# Use a clean tiny image to store artifacts in
+FROM alpine:3.11
 
 ARG BUILD_DATE=2020-04-01T00:00:00Z
 ARG VCS_REF=abcdef1
@@ -27,7 +27,19 @@ LABEL \
 COPY terraform-copy-variables.py entrypoint.sh /
 
 RUN set -eux \
-  && chmod +x /entrypoint.sh
+  && chmod +x /entrypoint.sh \
+  && apk update --no-cache \
+  && apk upgrade --no-cache \
+  && apk add --no-cache bash \
+  && apk add --no-cache git \
+  && apk add --no-cache python3 \
+  && if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi \
+  && python3 -m ensurepip \
+  && rm -r /usr/lib/python*/ensurepip \
+  && pip3 install --no-cache --upgrade pip setuptools wheel \
+  && if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi \
+  && rm -rf /var/cache/* \
+  && rm -rf /root/.cache/*
 
 # Finish up
 CMD python --version
