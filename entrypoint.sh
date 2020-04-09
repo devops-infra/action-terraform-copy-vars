@@ -5,8 +5,7 @@ set -e
 # github_token required
 if [[ -z "${INPUT_GITHUB_TOKEN}" && ${INPUT_PUSH_CHANGES} == "true" ]]; then
   MESSAGE='Missing variable "github_token: ${{ secrets.GITHUB_TOKEN }}".'
-  echo ${MESSAGE}
-  echo "::error ${MESSAGE}"
+  echo "[ERROR] ${MESSAGE}"
   exit 1
 fi
 
@@ -22,12 +21,16 @@ BRANCH=${GITHUB_REF/refs\/heads\//}
 
 # Info about formatted files
 if [[ ! -z ${FILES_CHANGED} ]]; then
+  echo " "
   echo "[INFO] Updated files:"
   for FILE in ${FILES_CHANGED}; do
     echo "- ${FILE}"
   done
+  echo " "
 else
+  echo " "
   echo "[INFO] No files updated."
+  echo " "
 fi
 
 # Create auto commit
@@ -37,11 +40,10 @@ if [[ ${INPUT_PUSH_CHANGES} == "true" && ! -z ${FILES_CHANGED} ]]; then
   REPO_URL="https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
   git config --global user.name ${GITHUB_ACTOR}
   git config --global user.email ${GITHUB_ACTOR}@users.noreply.github.com
-  git commit -am "[AUTO] Updated variables in files: ${FILES_CHANGED}"
+  git commit -am "[AUTO] Updated variables in files" -m "${FILES_CHANGED}"
   git push ${REPO_URL} HEAD:${BRANCH}
   echo " "
   echo "[INFO] No errors found."
-  echo "::set-output name=files_changed::${FILES_CHANGED}"
   echo " "
   exit 0
 fi
@@ -50,14 +52,12 @@ fi
 if [[ ${INPUT_FAIL_ON_MISSING} == "true" && ${RET_CODE} != "0" ]]; then
   echo " "
   echo "[ERROR] Not all variables where properly defined."
-  echo "::set-output name=files_changed::${FILES_CHANGED}"
   echo " "
   exit 1
 else
   # Pass in other cases
   echo " "
   echo "[INFO] No errors found."
-  echo "::set-output name=files_changed::${FILES_CHANGED}"
   echo " "
   exit 0
 fi
