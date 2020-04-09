@@ -1,0 +1,37 @@
+name: "Copy variables to many Terraform modules at once"
+author: "Krzysztof Szyper <biotyk@mail.com>"
+description: "GitHub Action automatically copying variables' definitions from a single file to many modules."
+inputs:
+  dirs_with_modules:
+    description: "Comma separated list of directory prefixes with modules."
+    required: false
+    default: "terraform"
+  files_with_vars:
+    description: "Comma separated list of files containing variables in directories matching dirs_with_modules."
+    required: false
+    default: "variables.tf"
+  all_vars_file:
+    description: "Name of a file containing base definitions of all variables."
+    required: false
+    default: "all-variables.tf"
+  fail_on_missing:
+    description: "Whether action should fail if all_vars_file is missing some definitions from modules."
+    required: false
+    default: "false"
+  push_changes:
+    description: "Whether changes should be pushed back to the current branch."
+    required: false
+    default: "false"
+  github_token:
+    description: "Personal Access Token for GitHub. If push_changes set to true."
+    required: false
+    default: ""
+outputs:
+  files_changed:
+    description: "List of updated files."
+runs:
+  using: "docker"
+  image: "Dockerfile"
+branding:
+  color: "white"
+  icon: "wind"
