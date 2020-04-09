@@ -1,10 +1,10 @@
 # Use a clean tiny image with Python 3
 FROM python:3
 
-# For http://label-schema.org/rc1/#build-time-labels
 ARG BUILD_DATE=2020-04-01T00:00:00Z
 ARG VCS_REF=abcdef1
 ARG VERSION=v0.0
+# For http://label-schema.org/rc1/#build-time-labels
 LABEL \
   com.github.actions.author="Krzysztof Szyper <biotyk@mail.com>" \
   com.github.actions.color="white" \
@@ -25,6 +25,9 @@ LABEL \
 
 # Copy all needed files
 COPY terraform-copy-variables.py entrypoint.sh /
+
+RUN set -eux \
+  && chmod +x /entrypoint.sh
 
 # Finish up
 CMD python --version
