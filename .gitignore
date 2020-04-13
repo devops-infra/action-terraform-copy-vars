@@ -130,7 +130,7 @@ dmypy.json
 
 # Intellij
 /.idea
-/action-terraform-copy-vars.iml
+*.iml
 
-# Python
+# Python venv
 /venv/

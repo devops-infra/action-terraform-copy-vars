@@ -5,4 +5,4 @@
 !LICENSE
 !README.md
 !entrypoint.sh
-!terraform-copy-variables.py
+!terraform-copy-vars.py
