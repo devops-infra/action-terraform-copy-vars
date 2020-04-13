@@ -18,20 +18,12 @@ inputs:
     description: "Whether action should fail if all_vars_file is missing some definitions from modules."
     required: false
     default: "false"
-  push_changes:
-    description: "Whether changes should be pushed back to the current branch."
-    required: false
-    default: "false"
-  github_token:
-    description: "Personal Access Token for GitHub. If push_changes set to true."
-    required: false
-    default: ""
 outputs:
   files_changed:
     description: "List of updated files."
 runs:
   using: "docker"
-  image: "Dockerfile"
+  image: "docker://christophshyper/action-terraform-copy-vars:latest"
 branding:
   color: "white"
   icon: "wind"
