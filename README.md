@@ -1,6 +1,6 @@
-# GitHub Action coping variables across many Terraform modules at once
+# GitHub Action coping Terraform variables across modules
 
-GitHub Action automatically copying variables' definitions from a single file to many modules.
+**GitHub Action automatically copying variables' definitions from a single file to many modules.**
 
 Dockerized as [christophshyper/action-terraform-copy-vars](https://hub.docker.com/repository/docker/christophshyper/action-terraform-copy-vars).
 
@@ -12,22 +12,21 @@ Features:
 
 
 ## Badge swag
-[
-![GitHub](https://img.shields.io/badge/github-devops--infra%2Faction--terraform--copy--vars-brightgreen.svg?style=flat-square&logo=github)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/devops-infra/action-terraform-copy-vars?color=brightgreen&label=Code%20size&style=flat-square&logo=github)
-![GitHub last commit](https://img.shields.io/github/last-commit/devops-infra/action-terraform-copy-vars?color=brightgreen&label=Last%20commit&style=flat-square&logo=github)
-](https://github.com/devops-infra/action-terraform-copy-vars "shields.io")
-[![Push to master](https://img.shields.io/github/workflow/status/devops-infra/action-terraform-copy-vars/Push%20to%20master?color=brightgreen&label=Master%20branch&logo=github&style=flat-square)
-](https://github.com/devops-infra/action-terraform-copy-vars/actions?query=workflow%3A%22Push+to+master%22)
-[![Push to other](https://img.shields.io/github/workflow/status/devops-infra/action-terraform-copy-vars/Push%20to%20other?color=brightgreen&label=Pull%20requests&logo=github&style=flat-square)
-](https://github.com/devops-infra/action-terraform-copy-vars/actions?query=workflow%3A%22Push+to+other%22)
+[![Master branch](https://github.com/devops-infra/action-terraform-copy-vars/workflows/Master%20branch/badge.svg)](https://github.com/devops-infra/action-terraform-copy-vars/actions?query=workflow%3A%22Master+branch%22)
+[![Other branches](https://github.com/devops-infra/action-terraform-copy-vars/workflows/Other%20branches/badge.svg)](https://github.com/devops-infra/action-terraform-copy-vars/actions?query=workflow%3A%22Other+branches%22)
 <br>
 [
-![DockerHub](https://img.shields.io/badge/docker-christophshyper%2Faction--terraform--copy--vars-blue.svg?style=flat-square&logo=docker)
-![Dockerfile size](https://img.shields.io/github/size/devops-infra/action-terraform-copy-vars/Dockerfile?label=Dockerfile%20size&style=flat-square&logo=docker)
-![Image size](https://img.shields.io/docker/image-size/christophshyper/action-terraform-copy-vars/latest?label=Image%20size&style=flat-square&logo=docker)
-![Docker Pulls](https://img.shields.io/docker/pulls/christophshyper/action-terraform-copy-vars?color=blue&label=Pulls&logo=docker&style=flat-square)
-![Docker version](https://img.shields.io/docker/v/christophshyper/action-terraform-copy-vars?color=blue&label=Version&logo=docker&style=flat-square)
+![GitHub repo](https://img.shields.io/badge/GitHub-devops--infra%2Faction--terraform--copy--vars-blueviolet.svg?style=plastic&logo=github)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/devops-infra/action-terraform-copy-vars?color=blueviolet&label=Code%20size&style=plastic&logo=github)
+![GitHub last commit](https://img.shields.io/github/last-commit/devops-infra/action-terraform-copy-vars?color=blueviolet&logo=github&style=plastic&label=Last%20commit)
+![GitHub license](https://img.shields.io/github/license/devops-infra/action-terraform-copy-vars?color=blueviolet&logo=github&style=plastic&label=License)
+](https://github.com/devops-infra/action-terraform-copy-vars "shields.io")
+<br>
+[
+![DockerHub](https://img.shields.io/badge/DockerHub-christophshyper%2Faction--terraform--copy--vars-blue.svg?style=plastic&logo=docker)
+![Docker version](https://img.shields.io/docker/v/christophshyper/action-terraform-copy-vars?color=blue&label=Version&logo=docker&style=plastic)
+![Image size](https://img.shields.io/docker/image-size/christophshyper/action-terraform-copy-vars/latest?label=Image%20size&style=plastic&logo=docker)
+![Docker Pulls](https://img.shields.io/docker/pulls/christophshyper/action-terraform-copy-vars?color=blue&label=Pulls&logo=docker&style=plastic)
 ](https://hub.docker.com/r/christophshyper/action-terraform-copy-vars "shields.io")
 
 
