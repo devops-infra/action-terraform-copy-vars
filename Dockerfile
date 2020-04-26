@@ -4,10 +4,10 @@ FROM alpine:3.11
 # Labels for http://label-schema.org/rc1/#build-time-labels
 # And for https://github.com/opencontainers/image-spec/blob/master/annotations.md
 # And for https://help.github.com/en/actions/building-actions/metadata-syntax-for-github-actions
-ARG NAME="GitHub Action coping variables across many Terraform modules at once"
+ARG NAME="GitHub Action coping Terraform variables across modules"
 ARG DESCRIPTION="GitHub Action automatically copying variables' definitions from a single file to many modules"
 ARG REPO_URL="https://github.com/devops-infra/action-terraform-copy-vars"
-ARG AUTHOR="Krzysztof Szyper / ChristophShyper <biotyk@mail.com>"
+ARG AUTHOR="Krzysztof Szyper / ChristophShyper / biotyk@mail.com"
 ARG HOMEPAGE="https://christophshyper.github.io/"
 ARG BUILD_DATE=2020-04-01T00:00:00Z
 ARG VCS_REF=abcdef1

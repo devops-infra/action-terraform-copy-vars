@@ -1,5 +1,5 @@
-name: GitHub Action coping variables across many Terraform modules at once
-author: Krzysztof Szyper / ChristophShyper <biotyk@mail.com>
+name: GitHub Action coping Terraform variables across modules
+author: Krzysztof Szyper / ChristophShyper / biotyk@mail.com
 description: GitHub Action automatically copying variables' definitions from a single file to many modules
 inputs:
   dirs_with_modules:
