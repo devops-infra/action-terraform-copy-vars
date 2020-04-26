@@ -12,8 +12,8 @@ How it works:
 - Reads a file INPUT_ALL_VARS_FILE and replacing its matching variables in files found in previous steps.
 - Reports if INPUT_ALL_VARS_FILE don't contain variables in some modules from INPUT_DIRS_WITH_MODULES.
 
-Copyright (c) 2020 Krzysztof Szyper (https://christophshyper.github.io/)
-Part of GitHub Action from https://github.com/ChristophShyper/action-terraform-copy-vars
+Copyright (c) 2020 Krzysztof Szyper / ChristophShyper (https://christophshyper.github.io/)
+Part of GitHub Action from https://github.com/devops-infra/action-terraform-copy-vars
 """
 
 
