@@ -14,28 +14,20 @@ FILES_CHANGED=$(git diff --staged --name-status)
 
 # Info about changed files
 if [[ -n ${FILES_CHANGED} ]]; then
-  echo " "
-  echo "[INFO] Updated files:"
+  echo -e "\n[INFO] Updated files:"
   for FILE in ${FILES_CHANGED}; do
     echo "${FILE}"
   done
-  echo " "
 else
-  echo " "
-  echo "[INFO] No files updated."
-  echo " "
+  echo -e "\n[INFO] No files updated."
 fi
 
 # Fail if needed
 if [[ ${INPUT_FAIL_ON_MISSING} == "true" && ${RET_CODE} != "0" ]]; then
-  echo " "
-  echo "[ERROR] Not all variables where properly defined."
-  echo " "
+  echo -e "\n[ERROR] Not all variables where properly defined."
   exit 1
 else
   # Pass in other cases
-  echo " "
-  echo "[INFO] No errors found."
-  echo " "
+  echo -e "\n[INFO] No errors found."
   exit 0
 fi
