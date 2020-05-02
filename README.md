@@ -2,7 +2,7 @@
 
 **GitHub Action automatically copying variables' definitions from a single file to many modules.**
 
-Dockerized as [christophshyper/action-terraform-copy-vars](https://hub.docker.com/repository/docker/christophshyper/action-terraform-copy-vars).
+Dockerized as [devopsinfra/action-terraform-copy-vars](https://hub.docker.com/repository/docker/devopsinfra/action-terraform-copy-vars).
 
 Features:
 * It's main use will be everywhere where [Terraform](https://github.com/hashicorp/terraform) is used with *more than one module in a **monorepo***.
@@ -23,11 +23,11 @@ Features:
 ](https://github.com/devops-infra/action-terraform-copy-vars "shields.io")
 <br>
 [
-![DockerHub](https://img.shields.io/badge/DockerHub-christophshyper%2Faction--terraform--copy--vars-blue.svg?style=plastic&logo=docker)
-![Docker version](https://img.shields.io/docker/v/christophshyper/action-terraform-copy-vars?color=blue&label=Version&logo=docker&style=plastic)
-![Image size](https://img.shields.io/docker/image-size/christophshyper/action-terraform-copy-vars/latest?label=Image%20size&style=plastic&logo=docker)
-![Docker Pulls](https://img.shields.io/docker/pulls/christophshyper/action-terraform-copy-vars?color=blue&label=Pulls&logo=docker&style=plastic)
-](https://hub.docker.com/r/christophshyper/action-terraform-copy-vars "shields.io")
+![DockerHub](https://img.shields.io/badge/DockerHub-devopsinfra%2Faction--terraform--copy--vars-blue.svg?style=plastic&logo=docker)
+![Docker version](https://img.shields.io/docker/v/devopsinfra/action-terraform-copy-vars?color=blue&label=Version&logo=docker&style=plastic)
+![Image size](https://img.shields.io/docker/image-size/devopsinfra/action-terraform-copy-vars/latest?label=Image%20size&style=plastic&logo=docker)
+![Docker Pulls](https://img.shields.io/docker/pulls/devopsinfra/action-terraform-copy-vars?color=blue&label=Pulls&logo=docker&style=plastic)
+](https://hub.docker.com/r/devopsinfra/action-terraform-copy-vars "shields.io")
 
 
 ## Reference
