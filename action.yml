@@ -23,7 +23,7 @@ outputs:
     description: List of updated files
 runs:
   using: docker
-  image: docker://christophshyper/action-terraform-copy-vars:latest
+  image: docker://devopsinfra/action-terraform-copy-vars:latest
 branding:
   color: purple
   icon: upload-cloud
