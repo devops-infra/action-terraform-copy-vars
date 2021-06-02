@@ -45,6 +45,7 @@ LABEL \
 # Copy all needed files
 COPY terraform-copy-vars.py entrypoint.sh /
 
+# hadolint ignore=DL3013,DL3017,DL3042,DL3018
 RUN set -eux \
   && chmod +x /entrypoint.sh \
   && apk update --no-cache \
@@ -61,6 +62,8 @@ RUN set -eux \
   && rm -rf /root/.cache/*
 
 # Finish up
+# hadolint ignore=DL3025
 CMD python --version
 WORKDIR /github/workspace
+# hadolint ignore=DL3025
 ENTRYPOINT /entrypoint.sh
