@@ -1,5 +1,5 @@
 # Use a clean tiny image to store artifacts in
-FROM alpine:3.11
+FROM alpine:3.14
 
 # Labels for http://label-schema.org/rc1/#build-time-labels
 # And for https://github.com/opencontainers/image-spec/blob/master/annotations.md
@@ -45,25 +45,18 @@ LABEL \
 # Copy all needed files
 COPY terraform-copy-vars.py entrypoint.sh /
 
-# hadolint ignore=DL3013,DL3017,DL3042,DL3018
-RUN set -eux \
-  && chmod +x /entrypoint.sh \
-  && apk update --no-cache \
-  && apk upgrade --no-cache \
-  && apk add --no-cache bash \
-  && apk add --no-cache git \
-  && apk add --no-cache python3 \
-  && if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi \
-  && python3 -m ensurepip \
-  && rm -r /usr/lib/python*/ensurepip \
-  && pip3 install --no-cache --upgrade pip setuptools wheel \
-  && if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi \
-  && rm -rf /var/cache/* \
-  && rm -rf /root/.cache/*
+RUN set -eux ;\
+  chmod +x /entrypoint.sh ;\
+  apk update --no-cache ;\
+  apk add --no-cache \
+    bash~=5.1.4 \
+    git~=2.32.0 \
+    python3~=3.9.5 \
+    py3-pip~=20.3.4 ;\
+  rm -rf /var/cache/* ;\
+  rm -rf /root/.cache/*
 
 # Finish up
-# hadolint ignore=DL3025
-CMD python --version
+CMD ["python", "--version"]
 WORKDIR /github/workspace
-# hadolint ignore=DL3025
-ENTRYPOINT /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
