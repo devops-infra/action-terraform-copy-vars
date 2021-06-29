@@ -33,7 +33,7 @@ Features:
 ## Reference
 ```yaml
     - name: Fail on different veriables' definitions
-      uses: devops-infra/action-terraform-copy-vars@master
+      uses: devops-infra/action-terraform-copy-vars@v0.2
       with:
         fail_on_changes: true
 ```
@@ -60,7 +60,7 @@ jobs:
     - name: Checkout repoistory
       uses: actions/checkout@v2
     - name: Fail on different veriables' definitions
-      uses: devops-infra/action-terraform-copy-vars@master
+      uses: devops-infra/action-terraform-copy-vars@v0.2
       with:
         fail_on_changes: true
 ```
@@ -77,7 +77,7 @@ jobs:
     - name: Checkout repoistory
       uses: actions/checkout@v2
     - name: Update Terraform variables
-      uses: devops-infra/action-terraform-copy-vars@master
+      uses: devops-infra/action-terraform-copy-vars@v0.2
       with:
         dirs_with_modules: modules
         files_with_vars: variables.tf
