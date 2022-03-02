@@ -49,7 +49,7 @@ RUN set -eux ;\
   chmod +x /entrypoint.sh ;\
   apk update --no-cache ;\
   apk add --no-cache \
-    bash~=5.1.8 \
+    bash~=5.1.16 \
     git~=2.34.1 \
     python3~=3.9.7 \
     py3-pip~=20.3.4 ;\
