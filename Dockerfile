@@ -1,5 +1,5 @@
 # Use a clean tiny image to store artifacts in
-FROM alpine:3.18.5
+FROM alpine:3.19.0
 
 # Labels for http://label-schema.org/rc1/#build-time-labels
 # And for https://github.com/opencontainers/image-spec/blob/master/annotations.md
@@ -49,10 +49,10 @@ RUN set -eux ;\
   chmod +x /entrypoint.sh ;\
   apk update --no-cache ;\
   apk add --no-cache \
-    bash~=5.2.15 \
-    git~=2.40.1 \
-    python3~=3.11.6 \
-    py3-pip~=23.1.2 ;\
+    bash~=5.2 \
+    git~=2.43 \
+    python3~=3.11 \
+    py3-pip~=23.3 ;\
   rm -rf /var/cache/* ;\
   rm -rf /root/.cache/*
 
