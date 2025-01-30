@@ -50,9 +50,9 @@ RUN set -eux ;\
   apk update --no-cache ;\
   apk add --no-cache \
     bash~=5.2 \
-    git~=2.45 \
+    git~=2.47 \
     python3~=3.12 \
-    py3-pip~=24.0 ;\
+    py3-pip~=24.3 ;\
   rm -rf /var/cache/* ;\
   rm -rf /root/.cache/*
 
