@@ -44,7 +44,7 @@ This action supports three tag levels for flexible versioning:
 ## 📖 API Reference
 ```yaml
     - name: Run the action
-      uses: devops-infra/action-terraform-copy-vars@v0.2
+      uses: devops-infra/action-terraform-copy-vars@v1.0.0
       with:
         dirs_with_modules: modules
         files_with_vars: variables.tf
@@ -77,7 +77,7 @@ jobs:
       uses: actions/checkout@v5
 
     - name: Fail on different variables' definitions
-      uses: devops-infra/action-terraform-copy-vars@v0.2
+      uses: devops-infra/action-terraform-copy-vars@v1.0.0
       with:
         fail_on_changes: true
 ```
@@ -96,7 +96,7 @@ jobs:
       uses: actions/checkout@v5
 
     - name: Update Terraform variables
-      uses: devops-infra/action-terraform-copy-vars@v0.2
+      uses: devops-infra/action-terraform-copy-vars@v1.0.0
       with:
         dirs_with_modules: modules
         files_with_vars: variables.tf
