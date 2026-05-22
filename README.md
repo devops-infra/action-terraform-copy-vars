@@ -1,4 +1,4 @@
-# GitHub Action coping Terraform variables across modules
+# GitHub Action copying Terraform variables across modules
 **GitHub Action automatically copying variables' definitions from a single file to many modules.**
 
 
@@ -8,17 +8,17 @@
 
 
 ## ✨ Features
-* It's main use will be everywhere where [Terraform](https://github.com/hashicorp/terraform) is used with *more than one module in a **monorepo***.
+* Its main use will be everywhere where [Terraform](https://github.com/hashicorp/terraform) is used with *more than one module in a **monorepo***.
 * Reads file defined with `all_vars_file` and will use whole definitions of variables from it.
 * For every module matching `dirs_with_modules` will search files matching `files_with_vars` and replace matching variables from `all_vars_file`.
-* To not loose the changes combine with my other action [devops-infra/action-commit-push](https://github.com/devops-infra/action-commit-push).
+* To not lose the changes combine with my other action [devops-infra/action-commit-push](https://github.com/devops-infra/action-commit-push).
 
 
 ## 🔗 Related Actions
 **Perfect for automation workflows and integrates seamlessly with [devops-infra/action-commit-push](https://github.com/devops-infra/action-commit-push).**
 
 
-## Badge swag
+## 📊 Badges
 [
 ![GitHub repo](https://img.shields.io/badge/GitHub-devops--infra%2Faction--terraform--copy--vars-blueviolet.svg?style=plastic&logo=github)
 ![GitHub last commit](https://img.shields.io/github/last-commit/devops-infra/action-terraform-copy-vars?color=blueviolet&logo=github&style=plastic&label=Last%20commit)
@@ -75,7 +75,7 @@ jobs:
   terraform-copy-vars:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repoistory
+    - name: Checkout repository
       uses: actions/checkout@v5
 
     - name: Fail on different variables' definitions
@@ -87,14 +87,14 @@ jobs:
 ### 🔀 Advanced Example
 Copy variables definitions from `all-variables.tf` to all `variables.tf` in `modules` subdirectories and commit updated files back to the repository using my other action [devops-infra/action-commit-push](https://github.com/devops-infra/action-commit-push).
 ```yaml
-name: Copy Terraform variables accross modules
+name: Copy Terraform variables across modules
 on:
   push
 jobs:
   terraform-copy-vars:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repoistory
+    - name: Checkout repository
       uses: actions/checkout@v5
 
     - name: Update Terraform variables
@@ -105,10 +105,36 @@ jobs:
         all_vars_file: all-variables.tf
 
     - name: Commit changes to repo
-      uses: devops-infra/action-commit-push@master
+      uses: devops-infra/action-commit-push@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         commit_prefix: "[AUTO-VARIABLES]"
+```
+
+
+### 🎯 Use specific version
+Pick the tag level based on your stability needs:
+- `vX.Y.Z`: exact immutable release (most predictable)
+- `vX.Y`: latest patch within one minor line
+- `vX`: latest patch within one major line
+
+```yaml
+name: Use pinned action version
+on: [push]
+jobs:
+  terraform-copy-vars:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: devops-infra/action-terraform-copy-vars@v1.0.1
+        id: pin-patch
+
+      - uses: devops-infra/action-terraform-copy-vars@v1.0
+        id: pin-minor
+
+      - uses: devops-infra/action-terraform-copy-vars@v1
+        id: pin-major
 ```
 
 
