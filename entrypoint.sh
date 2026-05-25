@@ -6,7 +6,7 @@ set -e
 RET_CODE=0
 
 # Run main action
-python /terraform-copy-vars.py
+python3 /terraform-copy-vars.py
 RET_CODE=$?
 
 # List of changed files
