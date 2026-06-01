@@ -20,6 +20,6 @@ RUN chmod +x /entrypoint.sh ;\
   rm -rf /var/lib/apt/lists/*
 
 # Finish up
-CMD ["python", "--version"]
+CMD ["python3", "--version"]
 WORKDIR /github/workspace
 ENTRYPOINT ["/entrypoint.sh"]

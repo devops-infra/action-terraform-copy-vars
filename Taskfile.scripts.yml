@@ -74,6 +74,38 @@ tasks:
           exit $rc
         fi
 
+  test:entrypoint:non-git:
+    desc: Validate entrypoint execution outside git repository
+    cmds:
+      - |
+        echo "▶️ Running non-git entrypoint test..."
+        set +e
+        ./tests/scripts/entrypoint-non-git-test.sh
+        rc=$?
+        set -e
+        if [ "$rc" -eq 0 ]; then
+          echo "✅ non-git entrypoint test passed"
+        else
+          echo "❌ non-git entrypoint test failed"
+          exit $rc
+        fi
+
+  test:image-mode:copy:
+    desc: Validate image mode appends missing variables
+    cmds:
+      - |
+        echo "▶️ Running image-mode copy test..."
+        set +e
+        ./tests/scripts/image-mode-copy-test.sh
+        rc=$?
+        set -e
+        if [ "$rc" -eq 0 ]; then
+          echo "✅ image-mode copy test passed"
+        else
+          echo "❌ image-mode copy test failed"
+          exit $rc
+        fi
+
   dependency:update:
     desc: 'No-op: no dedicated dependency updater configured for this profile'
     cmds:

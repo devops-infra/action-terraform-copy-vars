@@ -6,11 +6,17 @@ set -e
 RET_CODE=0
 
 # Run main action
-python /terraform-copy-vars.py
+python3 /terraform-copy-vars.py
 RET_CODE=$?
 
 # List of changed files
-FILES_CHANGED=$(git diff --staged --name-status)
+FILES_CHANGED=""
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  FILES_CHANGED=$(git diff --cached --name-status 2>/dev/null || true)
+  if [[ -z ${FILES_CHANGED} ]]; then
+    FILES_CHANGED=$(git diff --name-status 2>/dev/null || true)
+  fi
+fi
 
 # Info about changed files
 if [[ -n ${FILES_CHANGED} ]]; then

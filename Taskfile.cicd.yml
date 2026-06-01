@@ -10,6 +10,22 @@ tasks:
     cmds:
       - pre-commit run --all-files
 
+  test:
+    desc: Run repository tests
+    cmds:
+      - task: test:entrypoint:non-git
+      - task: test:image-mode:copy
+
+  test:entrypoint:non-git:
+    desc: Validate entrypoint execution outside git repository
+    cmds:
+      - task: scripts:test:entrypoint:non-git
+
+  test:image-mode:copy:
+    desc: Validate image mode appends missing variables
+    cmds:
+      - task: scripts:test:image-mode:copy
+
   pre-commit:install:
     desc: Install pre-commit hooks
     cmds:
