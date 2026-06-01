@@ -1,127 +1,154 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+# pylint: disable=invalid-name
+"""Copy Terraform variable definitions from a shared file to module files.
 
-import os
-import re
-
-
-"""
-Script for copying Terraform variables' definitions across whole modules monorepo from a single place.
 How it works:
-- Searches for all files defined in a comma separated list INPUT_FILES_WITH_VARS.
-- Searches only in subdirectories defined in a comma separated list INPUT_DIRS_WITH_MODULES.
-- Reads a file INPUT_ALL_VARS_FILE and replacing its matching variables in files found in previous steps.
-- Reports if INPUT_ALL_VARS_FILE don't contain variables in some modules from INPUT_DIRS_WITH_MODULES.
+- Searches for files matching INPUT_FILES_WITH_VARS.
+- Searches only under directories from INPUT_DIRS_WITH_MODULES.
+- Reads INPUT_ALL_VARS_FILE and replaces matching variables in found files.
+- Reports variables used in modules that are missing in INPUT_ALL_VARS_FILE.
 
-Copyright (c) 2020 Krzysztof Szyper / ChristophShyper (https://christophshyper.github.io/)
+Copyright (c) 2020 Krzysztof Szyper / ChristophShyper
 Part of GitHub Action from https://github.com/devops-infra/action-terraform-copy-vars
 """
 
-
-# read parameters from env vars
-tf_dir_filters = os.getenv("INPUT_DIRS_WITH_MODULES").split(",")
-tf_var_files = os.getenv("INPUT_FILES_WITH_VARS").split(",")
-tf_all_vars_file = os.getenv("INPUT_ALL_VARS_FILE")
-
-# regex for parsing variable definition
-regex = '(variable\s\"(.*)\")([\S\s]*?)(?=\s*variable\s\"|\s*\Z)'
+import os
+import re
+import sys
 
 
-# main handler function
+def _read_list_input(env_name):
+    """Read comma-separated env input into trimmed non-empty values."""
+    raw_value = os.getenv(env_name, "")
+    return [item.strip() for item in raw_value.split(",") if item.strip()]
+
+
+TF_DIR_FILTERS = _read_list_input("INPUT_DIRS_WITH_MODULES")
+TF_VAR_FILES = _read_list_input("INPUT_FILES_WITH_VARS")
+TF_ALL_VARS_FILE = os.getenv("INPUT_ALL_VARS_FILE", "").strip()
+
+VARIABLE_BLOCK_REGEX = r'(variable\s\"(.*)\")([\S\s]*?)(?=\s*variable\s\"|\s*\Z)'
+
+
 def handler():
-    found = find_non_defined()
+    """Run missing-variable detection and copy/update definitions."""
+    missing = find_non_defined()
     changed = copy_definitions()
-    if changed != "":
-        print("\n[INFO] Following variables had been copied {}".format(changed))
-    if found == "":
-        exit(0)
-    else:
-        print("\n[ERROR] Following variables are not defined in {}{}".format(tf_all_vars_file, found))
-        exit(1)
+
+    if changed:
+        print(f"\n[INFO] Following variables had been copied {changed}")
+
+    if missing:
+        print(f"\n[ERROR] Following variables are not defined in {TF_ALL_VARS_FILE}{missing}")
+        sys.exit(1)
+
+    sys.exit(0)
 
 
-# find variables in files from var_files and report missing in tf_all_vars_file
+def _format_change_message(file_path, variable_name, cwd_path):
+    """Build human-readable info line for a changed variable."""
+    return f"\n\nFile: {file_path} / Variable: {variable_name}".replace(cwd_path, "")
+
+
 def find_non_defined():
-    all_vars_list = get_all_vars(tf_all_vars_file)
-    var_files = find_var_files()
+    """Find variables used in module files but missing in the central file."""
+    all_var_names = {var_def[1] for var_def in get_all_vars(TF_ALL_VARS_FILE)}
     output = ""
-    for file in var_files:
-        file_vars = get_all_vars(file)
-        for source_var in file_vars:
-            found = False
-            for target_var in all_vars_list:
-                # find matching variables' names
-                if source_var[1] == target_var[1]:
-                    found = True
-            if not found:
-                output += "\n\nFile: {} / Variable: {}".format(file, source_var[1]).replace(get_cwd(), "")
+    cwd_path = get_cwd()
+
+    for file_path in find_var_files():
+        for source_var in get_all_vars(file_path):
+            if source_var[1] not in all_var_names:
+                output += _format_change_message(file_path, source_var[1], cwd_path)
+
     return output
 
 
-# copy variables from tf_all_vars_file to var_files
 def copy_definitions():
-    # get all source variables
-    all_vars_list = get_all_vars(tf_all_vars_file)
-    # find all wanted files
-    var_files = find_var_files()
+    """Copy and append variable definitions from central file to module files."""
+    all_vars_list = get_all_vars(TF_ALL_VARS_FILE)
     output = ""
-    for file in var_files:
-        file_vars = get_all_vars(file)
-        file_cont = read_file(file)
+    cwd_path = get_cwd()
+
+    for file_path in find_var_files():
+        file_vars = get_all_vars(file_path)
+        file_vars_by_name = {var_def[1]: var_def for var_def in file_vars}
+        file_content = read_file(file_path)
+
         for source_var in all_vars_list:
-            for target_var in file_vars:
-                # find matching variables' names
-                if source_var[1] == target_var[1]:
-                    source = "{}{}".format(source_var[0], source_var[2])
-                    target = "{}{}".format(target_var[0], target_var[2])
-                    if source != target:
-                        file_cont = file_cont.replace(target, source)
-                        output += "\n\nFile: {} / Variable: {}".format(file, source_var[1]).replace(get_cwd(), "")
-        # print("new: {}".format(file_cont))
-        write_file(file, file_cont)
+            source_name = source_var[1]
+            source_block = f"{source_var[0]}{source_var[2]}"
+            target_var = file_vars_by_name.get(source_name)
+
+            if target_var is not None:
+                target_block = f"{target_var[0]}{target_var[2]}"
+                if source_block != target_block:
+                    file_content = file_content.replace(target_block, source_block)
+                    output += _format_change_message(file_path, source_name, cwd_path)
+                continue
+
+            file_content = f"{file_content.rstrip()}\n\n{source_block.strip()}\n"
+            output += _format_change_message(file_path, source_name, cwd_path)
+
+        write_file(file_path, file_content)
+
     return output
 
 
-# get list of all variables' definitions in a file
-def get_all_vars(file):
-    cont = read_file(file)
-    vars_list = re.findall(regex, cont, re.MULTILINE)
-    return vars_list
+def get_all_vars(file_path):
+    """Extract Terraform variable blocks from a file."""
+    content = read_file(file_path)
+    return re.findall(VARIABLE_BLOCK_REGEX, content, re.MULTILINE)
 
 
-# write to a file
-def write_file(file, content):
-    f = open(file, "w")
-    f.write(content)
-    f.close()
+def write_file(file_path, content):
+    """Write content to file with UTF-8 encoding."""
+    with open(file_path, "w", encoding="utf-8") as file_handle:
+        file_handle.write(content)
 
 
-# read a file
-def read_file(file):
-    f = open(file, "r")
-    cont = f.read()
-    return cont
+def read_file(file_path):
+    """Read file content with UTF-8 encoding."""
+    with open(file_path, "r", encoding="utf-8") as file_handle:
+        return file_handle.read()
 
 
-# find all .tf files with variables to replace
+def _root_matches_filter(root_path, cwd_path):
+    """Check whether root path is inside configured module directories."""
+    for tf_dir in TF_DIR_FILTERS:
+        if root_path.startswith(f"{cwd_path}/{tf_dir}"):
+            return True
+    return False
+
+
+def _file_matches_filter(file_name):
+    """Check whether file name matches configured variable file suffixes."""
+    for tf_var_file in TF_VAR_FILES:
+        if file_name.endswith(tf_var_file):
+            return True
+    return False
+
+
 def find_var_files():
+    """Find all variable files in selected module directories."""
     curr_dir = get_cwd()
     files_list = []
-    for root, dirs, files in os.walk(curr_dir):
-        for tf_dir in tf_dir_filters:
-            if root.startswith("{}/{}".format(curr_dir, tf_dir)):
-                for file in files:
-                    for tf_var_file in tf_var_files:
-                        if file.endswith(tf_var_file):
-                            files_list.append("{}/{}".format(root, file))
+
+    for root, _, files in os.walk(curr_dir):
+        if not _root_matches_filter(root, curr_dir):
+            continue
+
+        for file_name in files:
+            if _file_matches_filter(file_name):
+                files_list.append(f"{root}/{file_name}")
+
     return files_list
 
 
-# get current directory
 def get_cwd():
-    dir_path = os.getcwd()
-    return dir_path
+    """Get current working directory."""
+    return os.getcwd()
 
 
-# run it as a script
-if __name__ == '__main__':
+if __name__ == "__main__":
     handler()
