@@ -7,4 +7,4 @@
 !README.md
 !entrypoint.sh
 !terraform-copy-vars.py
-!pip
+!alpine-packages.txt
